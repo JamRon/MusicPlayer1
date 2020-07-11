@@ -27,7 +27,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     //current position
     private int songPosn;
     private final IBinder musicBind = new MusicBinder();
-    private String songTitle = &quot;&quot;;
+    private String songTitle = "";
     private static final int NOTIFY_ID=1;
     private boolean shuffle=false;
     private Random rand;
@@ -79,7 +79,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
     @Override
     public void onCompletion(MediaPlayer mp) {
-        if(player.getCurrentPosition()&gt;0){
+        if(player.getCurrentPosition() > 0){
             mp.reset();
             playNext();
         }
@@ -103,10 +103,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         Notification.Builder builder = new Notification.Builder(this);
 
         builder.setContentIntent(pendInt)
-                .setSmallIcon(R.drawable.play)
+                .setSmallIcon(R.drawable.android_music_player_play)
                 .setTicker(songTitle)
                 .setOngoing(true)
-                .setContentTitle(&quot;Playing&quot;)
+                .setContentTitle("Playing")
                 .setContentText(songTitle);
         Notification not = builder.build();
 
@@ -163,7 +163,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public void playPrev(){
         songPosn--;
-        if(songPosn&lt;0)
+        if(songPosn < 0)
             songPosn=songs.size()-1;
         playSong();
     }
@@ -178,7 +178,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
         else{
             songPosn++;
-            if(songPosn&gt;=songs.size()) songPosn=0;
+            if(songPosn >= songs.size()) songPosn=0;
         }
         playSong();
     }
