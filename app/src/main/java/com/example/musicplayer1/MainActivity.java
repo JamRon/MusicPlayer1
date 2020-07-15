@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
     private MusicController controller;
     private boolean paused=false, playbackPaused=false;
 
-    private static final String CLIENT_ID = "";
-    private static final String REDIRECT_URI = "http://com.yourdomain.yourapp/callback";
+    private static final String CLIENT_ID = "a911f9e3de834eb6a0a1cf52848b360c";
+    private static final String REDIRECT_URI = "http://MusicPLayer1.com://callback";
     private SpotifyAppRemote mSpotifyAppRemote;
 
 
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
                         .showAuthView(true)
                         .build();
 
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
         SpotifyAppRemote.connect(this, connectionParams,
                 new Connector.ConnectionListener() {
 
@@ -98,13 +99,16 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
                     public void onFailure(Throwable error) {
                         if (error instanceof NotLoggedInException || error instanceof UserNotAuthorizedException) {
                             // Show login button and trigger the login flow from auth library when clicked
+                            Log.d("MainActivity", "Connected! Yay!");
                         } else if (error instanceof CouldNotFindSpotifyApp) {
                             // Show button to download Spotify
+                            Log.d("MainActivity", "You Need to downlaod Spotify!");
+                        }
+                        else {
+                            Log.d("MainActivity", error.getMessage().toString());
                         }
                     }
                 });
-
-
     }
 
     private void connected() {
