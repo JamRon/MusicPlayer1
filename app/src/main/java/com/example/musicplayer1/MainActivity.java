@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
                     public void onFailure(Throwable error) {
                         if (error instanceof NotLoggedInException || error instanceof UserNotAuthorizedException) {
                             // Show login button and trigger the login flow from auth library when clicked
-                            Log.d("MainActivity", "Connected! Yay!");
+                            Log.d("MainActivity", error.getMessage().toString());
                         } else if (error instanceof CouldNotFindSpotifyApp) {
                             // Show button to download Spotify
                             Log.d("MainActivity", "You Need to downlaod Spotify!");
@@ -112,9 +112,11 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
     }
 
     private void connected() {
+        mSpotifyAppRemote.getConnectApi().connectSwitchToLocalDevice();
+        mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
         Log.e("MainActivity", "WORKS");
     }
-
+//    spotify-auth-release-1.2.3
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
