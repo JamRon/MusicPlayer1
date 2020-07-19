@@ -20,6 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name = "com.example.musicplayer1.MainActivity" />
+        <service android:name = "com.example.musicplayer1.MusicService" />
     </application>
 </manifest>

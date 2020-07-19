@@ -4,13 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FF330000"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ListView
         android:id="@+id/song_list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
     </ListView>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:background="#787878"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
 </LinearLayout>

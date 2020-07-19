@@ -44,8 +44,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         rand=new Random();
     }
     public void setShuffle(){
-        if(shuffle) shuffle=false;
-        else shuffle=true;
+        shuffle= !shuffle;
     }
 
     public void initMusicPlayer(){

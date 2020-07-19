@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
         setController();
+        //controller.show(0);
     }
 
     @Override
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
             }
         });
         controller.setMediaPlayer(this);
-        controller.setAnchorView(findViewById(R.id.song_list));
+        controller.setAnchorView(findViewById(R.id.toolbar));
         controller.setEnabled(true);
     }
 
