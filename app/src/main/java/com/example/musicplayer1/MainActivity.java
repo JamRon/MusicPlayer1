@@ -1,12 +1,25 @@
 package com.example.musicplayer1;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.musicplayer1.MusicService.MusicBinder;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
+import android.app.DownloadManager;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.MediaController.MediaPlayerControl;
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -23,6 +36,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
+import android.widget.TextView;
+
+import com.google.gson.JsonArray;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -34,6 +51,13 @@ import com.spotify.protocol.client.Subscription;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.spotify.sdk.android.auth.AuthorizationClient;
+import com.spotify.sdk.android.auth.AuthorizationRequest;
+import com.spotify.sdk.android.auth.AuthorizationResponse;
+
 
 public class MainActivity extends AppCompatActivity implements MediaPlayerControl{
     private ArrayList<Song> songList;
@@ -44,9 +68,15 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
     private MusicController controller;
     private boolean paused=false, playbackPaused=false;
 
+    private static final int REQUEST_CODE = 1337;
     private static final String CLIENT_ID = "a911f9e3de834eb6a0a1cf52848b360c";
     private static final String REDIRECT_URI = "http://MusicPLayer1.com://callback";
     private SpotifyAppRemote mSpotifyAppRemote;
+
+    private EditText searchText;
+    private RequestQueue mRequest;
+    private TextView searchResult;
+    private String  token = "";
 
 
     @Override
@@ -67,6 +97,34 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        // Check if result comes from the correct activity
+        if (requestCode == REQUEST_CODE) {
+            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
+
+            switch (response.getType()) {
+                // Response was successful and contains auth token
+                case TOKEN:
+                    // Handle successful response
+                    token = response.getAccessToken();
+                    break;
+
+                // Auth flow returned an error
+                case ERROR:
+                    // Handle error response
+                    break;
+
+                // Most likely auth flow was cancelled
+                default:
+                    // Handle other cases
+            }
+        }
+    }
+
+
+    @Override
     protected void onStart() {
         super.onStart();
         if(playIntent==null){
@@ -81,6 +139,13 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
                         .setRedirectUri(REDIRECT_URI)
                         .showAuthView(true)
                         .build();
+
+        AuthorizationRequest.Builder builder =
+                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
+        builder.setScopes(new String[]{"streaming"});
+        AuthorizationRequest request = builder.build();
+
+        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
 
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
         SpotifyAppRemote.connect(this, connectionParams,
@@ -105,15 +170,17 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
                             Log.d("MainActivity", "You Need to downlaod Spotify!");
                         }
                         else {
-                            Log.d("MainActivity", error.getMessage().toString());
+                            Log.d("MainActivity", error.getMessage());
                         }
                     }
                 });
     }
 
+
+
     private void connected() {
         mSpotifyAppRemote.getConnectApi().connectSwitchToLocalDevice();
-        mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+//        mSpotifyAppRemote.getPlayerApi().play("spotify:track:6ztvsy3C6hPjVg9j4x1XKJ");
         Log.e("MainActivity", "WORKS");
     }
 //    spotify-auth-release-1.2.3
@@ -141,6 +208,68 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
         setController();
+
+
+
+        // Benji Testing out request from spotify
+        Button get_request_Button = findViewById(R.id.search_Button);
+        searchResult = findViewById(R.id.show_Text);
+        searchText = findViewById(R.id.search_Text);
+
+        get_request_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendGetRequest();
+            }
+        });
+    }
+
+    private void sendGetRequest() {
+        mRequest = Volley.newRequestQueue(this);
+
+        jsonParse();
+
+    }
+
+    private void jsonParse() {
+        String input = searchText.getText().toString().replaceAll(" ", "%20");
+
+        String url = "https://api.spotify.com/v1/search?q=" + input +"&type=track&market=US&limit=5&offset=0";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject jsonTracks = response.getJSONObject("tracks");
+                            JSONArray jsonTracksArray = jsonTracks.getJSONArray("items");
+                            for (int i = 0; i < jsonTracksArray.length(); ++i) {
+                                JSONObject track = jsonTracksArray.getJSONObject(i);
+                                String name = track.getString("name");
+                                String uri = track.getString("uri");
+                                searchResult.append(name + " " + uri);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("MainActivity", Objects.requireNonNull(e.getMessage()));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("MainActivity", Objects.requireNonNull(error.getMessage()));
+            }
+
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Accept", "application/json");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", "Bearer " + token);
+                return params;
+            }
+        };
+        mRequest.add(request);
     }
 
     @Override
@@ -326,4 +455,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
         }
         controller.show(0);
     }
+
+
+
 }

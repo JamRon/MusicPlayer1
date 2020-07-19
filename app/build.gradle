@@ -37,5 +37,6 @@ dependencies {
     implementation project(':spotify-auth-release-1.2.3')
     implementation 'com.spotify.android:auth:1.2.3'
     implementation "com.google.code.gson:gson:2.8.5"
-
+    implementation 'com.android.volley:volley:1.1.1'
 }
+
