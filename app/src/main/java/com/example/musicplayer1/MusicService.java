@@ -7,12 +7,11 @@ import android.os.IBinder;
 import java.util.ArrayList;
 import android.content.ContentUris;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.PowerManager;
 import android.util.Log;
-import java.security.Provider;
+
 import java.util.Random;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -94,7 +93,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void onPrepared(MediaPlayer mp) {
         //start playback
         mp.start();
-        Intent notIntent = new Intent(this, MainActivity.class);
+        Intent notIntent = new Intent(this, SongActivity.class);
         notIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendInt = PendingIntent.getActivity(this, 0,
                 notIntent, PendingIntent.FLAG_UPDATE_CURRENT);

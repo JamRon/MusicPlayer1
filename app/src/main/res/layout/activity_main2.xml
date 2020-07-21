@@ -13,8 +13,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#1F4683"
-        android:cacheColorHint="#FFFFFF"
-        android:entries="5"></ListView>
+        android:cacheColorHint="#FFFFFF"></ListView>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"

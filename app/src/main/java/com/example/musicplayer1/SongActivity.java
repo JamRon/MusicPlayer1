@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.view.MenuItem;
 import android.view.View;
+/*
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -33,9 +34,10 @@ import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
 import com.spotify.protocol.client.Subscription;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
+*/
 
 
-public class MainActivity extends AppCompatActivity implements MediaPlayerControl{
+public class SongActivity extends AppCompatActivity implements MediaPlayerControl{
     private ArrayList<Song> songList;
     private ListView songView;
     private MusicService musicSrv;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
 
     private static final String CLIENT_ID = "";
     private static final String REDIRECT_URI = "http://com.yourdomain.yourapp/callback";
-    private SpotifyAppRemote mSpotifyAppRemote;
+   // private SpotifyAppRemote mSpotifyAppRemote;
 
 
     @Override
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
             startService(playIntent);
         }
 
-        // Set the connection parameters
+      /*  // Set the connection parameters
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
                         .setRedirectUri(REDIRECT_URI)
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
                         }
                     }
                 });
-
+*/
 
     }
 
