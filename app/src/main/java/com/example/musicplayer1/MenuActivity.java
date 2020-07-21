@@ -18,34 +18,38 @@ import java.util.LinkedList;
 
 public class MenuActivity extends AppCompatActivity {
     ListView menu;
+
+
     AdapterView.OnItemClickListener menuListener = new AdapterView.OnItemClickListener() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if(position == 3){
-                Context context = getApplicationContext();
-                Intent activityIntent = new Intent(context, SongActivity.class);
+            if (position == 0){
+                Intent activityIntent = new Intent(MenuActivity.this, SongActivity.class);
                 activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                activityIntent.setIdentifier("Songs");
-                context.startActivity(activityIntent);
-            }else if(position == 2){
-                Context context = getApplicationContext();
-                Intent activityIntent = new Intent(context, SongActivity.class);
-                activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                activityIntent.setIdentifier("Artists");
-                context.startActivity(activityIntent);
+//                activityIntent.setIdentifier("Playlists");
+                startActivity(activityIntent);
             }else if(position == 1){
-                Context context = getApplicationContext();
-                Intent activityIntent = new Intent(context, SongActivity.class);
+                Intent activityIntent = new Intent(MenuActivity.this, SongActivity.class);
                 activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                activityIntent.setIdentifier("Albums");
-                context.startActivity(activityIntent);
-            }else{
-                Context context = getApplicationContext();
-                Intent activityIntent = new Intent(context, SongActivity.class);
+//                activityIntent.setIdentifier("Albums");
+                startActivity(activityIntent);
+            }else if(position == 2){
+                Intent activityIntent = new Intent(MenuActivity.this, SongActivity.class);
                 activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                activityIntent.setIdentifier("Playlists");
-                context.startActivity(activityIntent);
+//                activityIntent.setIdentifier("Artists");
+                startActivity(activityIntent);
+            }
+            else if(position == 3){
+                Intent activityIntent = new Intent(MenuActivity.this, SongActivity.class);
+                activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+//                activityIntent.setIdentifier("Songs");
+                startActivity(activityIntent);
+            }else if(position == 4){
+                Intent activityIntent = new Intent(MenuActivity.this, SpotifyActivity.class);
+                activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+//                activityIntent.setIdentifier("Search");
+                startActivity(activityIntent);
             }
         }
     };
@@ -61,9 +65,11 @@ public class MenuActivity extends AppCompatActivity {
         menuItems.add("Album");
         menuItems.add("Artists");
         menuItems.add("Songs");
+        menuItems.add("Search");
 
         ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, menuItems);
 
+        menu.setOnItemClickListener(menuListener);
         menu.setAdapter(menuAdapter);
     }
 }

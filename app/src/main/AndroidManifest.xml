@@ -35,6 +35,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".SpotifyActivity"></activity>
+
+
+
+
         <service android:name=".MusicService" />
     </application>
 

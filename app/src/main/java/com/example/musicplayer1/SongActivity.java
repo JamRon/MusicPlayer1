@@ -39,7 +39,6 @@ public class SongActivity extends AppCompatActivity implements MediaPlayerContro
 
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //menu item selected
@@ -69,8 +68,6 @@ public class SongActivity extends AppCompatActivity implements MediaPlayerContro
 
 
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +163,7 @@ public class SongActivity extends AppCompatActivity implements MediaPlayerContro
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                songList.add(new Song(thisId, thisTitle, thisArtist));
+                songList.add(new Song(thisId, thisTitle, thisArtist, "onPrem"));
             }
             while (musicCursor.moveToNext());
         }
