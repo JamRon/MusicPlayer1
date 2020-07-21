@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayerContro
 
     }
 
+    // Test
     private void connected() {
         Log.e("MainActivity", "WORKS");
     }
