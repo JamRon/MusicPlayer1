@@ -2,25 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".MenuActivity">
+    tools:context=".SongActivity">
 
     <ListView
-        android:id="@+id/menu_ListView"
-        android:layout_width="match_parent"
+        android:id="@+id/song_list"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="#1F4683"
-        android:cacheColorHint="#FFFFFF"></ListView>
+        android:layout_weight="1">
+
+    </ListView>
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="5"
-        android:background="?attr/colorPrimary"
+        android:background="#787878"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 

@@ -1,12 +1,10 @@
 package com.example.musicplayer1;
 
-import com.example.musicplayer1.MusicService.MusicBinder;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import android.util.Log;
 import android.widget.MediaController.MediaPlayerControl;
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -72,7 +70,7 @@ public class SongActivity extends AppCompatActivity implements MediaPlayerContro
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_list);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
