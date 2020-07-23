@@ -192,7 +192,7 @@ public class SongActivity extends AppCompatActivity implements MediaPlayerContro
             }
         });
         controller.setMediaPlayer(this);
-        controller.setAnchorView(findViewById(R.id.toolbar));
+        controller.setAnchorView(findViewById(R.id.space));
         controller.setEnabled(true);
     }
 

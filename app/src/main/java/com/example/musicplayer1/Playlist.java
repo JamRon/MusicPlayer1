@@ -1,0 +1,28 @@
+package com.example.musicplayer1;
+
+import java.util.LinkedList;
+
+public class Playlist {
+
+    private String title;
+    private String type;
+    private LinkedList<Song> songList;
+
+    public Playlist(LinkedList<Song> songList, String title, String type){
+        this.songList = songList;
+        this.title = title;
+        this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public LinkedList<Song> getSongList() {
+        return songList;
+    }
+}

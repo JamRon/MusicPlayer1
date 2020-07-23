@@ -24,7 +24,7 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (position == 0){
-                Intent activityIntent = new Intent(MenuActivity.this, SongActivity.class);
+                Intent activityIntent = new Intent(MenuActivity.this, PlaylistActivity.class);
                 activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 //                activityIntent.setIdentifier("Playlists");
                 startActivity(activityIntent);

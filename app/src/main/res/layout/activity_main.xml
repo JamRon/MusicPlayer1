@@ -15,13 +15,9 @@
         android:background="#1F4683"
         android:cacheColorHint="#FFFFFF"></ListView>
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+    <Space
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:layout_weight="5" />
 
 </LinearLayout>
