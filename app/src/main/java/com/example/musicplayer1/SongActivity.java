@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import android.provider.MediaStore;
 import android.widget.MediaController.MediaPlayerControl;
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -156,12 +157,15 @@ public class SongActivity extends AppCompatActivity implements MediaPlayerContro
                     (android.provider.MediaStore.Audio.Media._ID);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
+            int albumColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.ALBUM);
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                songList.add(new Song(thisId, thisTitle, thisArtist, "onPrem"));
+                String thisAlbum = musicCursor.getString(albumColumn);
+                songList.add(new Song(thisId, thisTitle, thisArtist, "onPrem", thisAlbum));
             }
             while (musicCursor.moveToNext());
         }

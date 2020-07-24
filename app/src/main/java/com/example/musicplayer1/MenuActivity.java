@@ -29,12 +29,12 @@ public class MenuActivity extends AppCompatActivity {
 //                activityIntent.setIdentifier("Playlists");
                 startActivity(activityIntent);
             }else if(position == 1){
-                Intent activityIntent = new Intent(MenuActivity.this, SongActivity.class);
+                Intent activityIntent = new Intent(MenuActivity.this, AlbumActivity.class);
                 activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 //                activityIntent.setIdentifier("Albums");
                 startActivity(activityIntent);
             }else if(position == 2){
-                Intent activityIntent = new Intent(MenuActivity.this, SongActivity.class);
+                Intent activityIntent = new Intent(MenuActivity.this, ArtistsActivity.class);
                 activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 //                activityIntent.setIdentifier("Artists");
                 startActivity(activityIntent);

@@ -5,14 +5,15 @@ public class Song {
     private String type;
     private String title;
     private String artist;
+    private String album;
 
 
-    public Song(long songID, String songTitle, String songArtist, String songType) {
+    public Song(long songID, String songTitle, String songArtist, String songType, String songAlbum) {
         this.id=songID;
         this.title=songTitle;
         this.artist=songArtist;
         this.type = songType;
-
+        this.album = songAlbum;
 
     }
 
@@ -30,5 +31,9 @@ public class Song {
 
     public String getType(){
         return this.type;
+    }
+
+    public String getAlbum() {
+        return this.album;
     }
 }

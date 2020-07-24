@@ -16,7 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtistsActivity"></activity>
+        <provider
+            android:name=".PlaylistsProvider"
+            android:authorities="com.musicplayer.provider"
+            android:enabled="true"
+            android:exported="true"></provider>
+
+        <activity android:name=".ArtistsActivity" />
         <activity
             android:name=".AlbumActivity"
             android:label="@string/title_activity_album">
