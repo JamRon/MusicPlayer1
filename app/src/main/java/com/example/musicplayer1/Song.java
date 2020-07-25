@@ -6,14 +6,27 @@ public class Song {
     private String title;
     private String artist;
     private String album;
+    private String uri;
 
 
-    public Song(long songID, String songTitle, String songArtist, String songType, String songAlbum) {
+    public Song(long songID, String songTitle, String songArtist,
+                String songType, String songAlbum) {
         this.id=songID;
         this.title=songTitle;
         this.artist=songArtist;
         this.type = songType;
         this.album = songAlbum;
+        this.uri = null;
+    }
+
+    public Song(long songID, String songTitle, String songArtist,
+                String songType, String songAlbum, String songUri) {
+        this.id=songID;
+        this.title=songTitle;
+        this.artist=songArtist;
+        this.type = songType;
+        this.album = songAlbum;
+        this.uri = songUri;
 
     }
 
@@ -35,5 +48,9 @@ public class Song {
 
     public String getAlbum() {
         return this.album;
+    }
+
+    public String getUri() {
+        return this.uri;
     }
 }
