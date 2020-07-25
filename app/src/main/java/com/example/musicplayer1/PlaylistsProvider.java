@@ -14,7 +14,7 @@ public class PlaylistsProvider extends ContentProvider {
 
     protected static final class MainDatabaseHelper extends SQLiteOpenHelper {
         MainDatabaseHelper(Context context) {
-            super(context, DBNAME, null, 0);
+            super(context, DBNAME, null, 1);
         }
         @Override
         public void onCreate(SQLiteDatabase db) {
