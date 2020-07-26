@@ -92,7 +92,7 @@ public class SongActivity extends AppCompatActivity implements MediaPlayerContro
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
         setController();
-        //controller.show(0);
+//        controller.show(0);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.musicplayer1;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class SongAdapter extends BaseAdapter {
     private LayoutInflater songInf;
 
     public SongAdapter(Context c, ArrayList<Song> theSongs){
+        super();
         songs=theSongs;
         songInf=LayoutInflater.from(c);
     }
@@ -38,7 +40,7 @@ public class SongAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //map to song layout
-        LinearLayout songLay = (LinearLayout)songInf.inflate
+        @SuppressLint("ViewHolder") LinearLayout songLay = (LinearLayout)songInf.inflate
                 (R.layout.song, parent, false);
         //get title and artist views
         TextView songView = (TextView)songLay.findViewById(R.id.song_title);
@@ -52,4 +54,5 @@ public class SongAdapter extends BaseAdapter {
         songLay.setTag(position);
         return songLay;
     }
+
 }
