@@ -7,8 +7,10 @@ public class Song {
     private String artist;
     private String album;
     private String uri;
+    private String songImage;
 
 
+    // Songs on phone
     public Song(long songID, String songTitle, String songArtist,
                 String songType, String songAlbum) {
         this.id=songID;
@@ -17,17 +19,19 @@ public class Song {
         this.type = songType;
         this.album = songAlbum;
         this.uri = null;
+        this.songImage = null;
     }
 
+    // Spotify
     public Song(long songID, String songTitle, String songArtist,
-                String songType, String songAlbum, String songUri) {
+                String songType, String songAlbum, String songUri, String songImage) {
         this.id=songID;
         this.title=songTitle;
         this.artist=songArtist;
         this.type = songType;
         this.album = songAlbum;
         this.uri = songUri;
-
+        this.songImage = songImage;
     }
 
     public long getID(){
@@ -52,5 +56,9 @@ public class Song {
 
     public String getUri() {
         return this.uri;
+    }
+
+    public String getSongImage() {
+        return this.songImage;
     }
 }
