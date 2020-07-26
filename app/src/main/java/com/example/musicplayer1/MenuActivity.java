@@ -13,8 +13,6 @@ import android.widget.ListView;
 
 import java.util.LinkedList;
 
-
-
 public class MenuActivity extends AppCompatActivity {
     ListView menu;
 

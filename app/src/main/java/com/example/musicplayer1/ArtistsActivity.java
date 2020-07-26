@@ -21,7 +21,7 @@ public class ArtistsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artists);
 
-        artistLV = findViewById(R.id.albumLV);
+        artistLV = findViewById(R.id.artsitsLV);
 
         artists = new Artist[10]; //TODO: NEEDS CORRECT INITIALIZATION
         LinkedList<String> artistNames = new LinkedList<>();

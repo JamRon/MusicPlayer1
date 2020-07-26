@@ -283,7 +283,7 @@ public class SpotifyActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("SpotifyActivity", error.getMessage());
+               Log.e("SpotifyActivity", error.getMessage());
             }
 
         }){
