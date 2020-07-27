@@ -45,11 +45,11 @@ public class PlaylistDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-       // songList = getSongList();
+        songList = getSongList();
         selectedItems = new MyArrayList();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        ArrayList<String> songsArray = new ArrayList<>();//getsongTitles();
+        ArrayList<String> songsArray = /*new ArrayList<>();*/getsongTitles();
 
         CharSequence[] cs = songsArray.toArray(new CharSequence[songsArray.size()]);
         CharSequence[] cs2 = {"www","meeman","monkey"};
@@ -61,7 +61,7 @@ public class PlaylistDialog extends DialogFragment {
         // ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,songsArray);
         //songLV.setAdapter(adapter);
             builder.setView(root)
-                    .setMultiChoiceItems(cs2,null,songsListener)
+                    .setMultiChoiceItems(cs,null,songsListener)
                     .setPositiveButton("Finish", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {

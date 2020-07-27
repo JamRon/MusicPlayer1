@@ -28,6 +28,7 @@ import java.util.LinkedList;
 
 public class PlaylistActivity extends AppCompatActivity {
 
+    private static Context context;
     LinkedList<Playlist> playlists;
     ListView playlistLV;
     ImageButton create;
@@ -45,6 +46,7 @@ public class PlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
+        PlaylistActivity.context = getApplicationContext();
 
         playlistLV = findViewById(R.id.playlist_LV);
         create = findViewById(R.id.imageButton);
@@ -57,13 +59,19 @@ public class PlaylistActivity extends AppCompatActivity {
         playlistLV.setAdapter(mCursorAdapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
+
     public void addPlaylist(Playlist playlist){
         playlists.add(playlist);
 
     }
 
-        public static Context contextOfApplication;
-        public static Context getContextOfApplication(){
-            return contextOfApplication;
+    public static Context getContextOfApplication(){
+            return PlaylistActivity.context;
         }
     }
