@@ -1,14 +1,15 @@
 package com.example.musicplayer1;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Playlist {
 
     private String title;
     private String type;
-    private LinkedList<Song> songList;
+    private ArrayList<Song> songList;
 
-    public Playlist(LinkedList<Song> songList, String title, String type){
+    public Playlist(ArrayList<Song> songList, String title, String type){
         this.songList = songList;
         this.title = title;
         this.type = type;
@@ -22,7 +23,7 @@ public class Playlist {
         return type;
     }
 
-    public LinkedList<Song> getSongList() {
+    public ArrayList<Song> getSongList() {
         return songList;
     }
 }

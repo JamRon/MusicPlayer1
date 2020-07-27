@@ -101,4 +101,11 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="playlist_title">Playlist Title</string>
     <string name="popup_add_to_playlist">What playlist do you want to add to?</string>
+    <string name="newPlaylistTV">New Playlist</string>
+    <string name="enter_playlist_title">Enter Playlist Title</string>
+    <string-array name="tests">
+        <item>monkey</item>
+        <item>buddy</item>
+        <item>moon</item>
+    </string-array>
 </resources>

@@ -1,5 +1,12 @@
 package com.example.musicplayer1;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+
+import java.util.ArrayList;
+
 public class Song {
     private long id;
     private String type;
@@ -60,5 +67,12 @@ public class Song {
 
     public String getSongImage() {
         return this.songImage;
+    }
+
+
+    public Song findByTitle (String s){
+        if(getTitle() == s)
+            return this;
+        return null;
     }
 }
