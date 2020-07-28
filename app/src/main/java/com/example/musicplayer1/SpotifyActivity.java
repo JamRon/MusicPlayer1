@@ -325,7 +325,11 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
 
     @Override
     public void start() {
-        mSpotifyAppRemote.getPlayerApi().play(songList.get(currentSong).getUri());
+        if (playback_time == 0)
+            {mSpotifyAppRemote.getPlayerApi().play(songList.get(currentSong).getUri());}
+        else
+            {mSpotifyAppRemote.getPlayerApi().resume();}
+
         controller.show(0);
     }
 
@@ -370,7 +374,6 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
     @Override
     public void seekTo(int pos) {
         mSpotifyAppRemote.getPlayerApi().seekTo(pos);
-
     }
 
     @Override
