@@ -53,7 +53,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
                 menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        findSongs('a',albumNames.get(position));
+                        findSongs('b',albumNames.get(position));
                     }
                 });
             }else if(position == 2){
@@ -114,7 +114,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
         menu = findViewById(R.id.menu_ListView);
         LinkedList<String> menuItems = new LinkedList<>();
         menuItems.add("Playlists");
-        menuItems.add("Album");
+        menuItems.add("Albums");
         menuItems.add("Artists");
         menuItems.add("Songs");
         menuItems.add("Search");
@@ -132,7 +132,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
         menu.setAdapter(menuAdapter);
     }
 
-    protected void findSongs(char type, String filter){
+    public void findSongs(char type, String filter){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -144,9 +144,14 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
 
         songList = new ArrayList<Song>();
         switch (type){
-            case 's': getSongList();
-            case 'a': getSongList(type,filter);
-            case 'b': getSongList(type, filter);
+            case 's': {
+                getSongList();
+                break;
+            }
+            default: {
+                getSongList(type,filter);
+                break;
+            }
         }
         Collections.sort(songList, new Comparator<Song>(){
             public int compare(Song a, Song b){
@@ -198,7 +203,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
             //get service
             musicSrv = binder.getService();
             //pass list
-            musicSrv.setList(songList);
+           // musicSrv.setList(songList);
             musicBound = true;
         }
 
@@ -278,7 +283,6 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
         }
         ArrayAdapter<String> artistAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, albumNames);
         menu.setAdapter(artistAdapter);    }
-
     public void getSongList(char type, String filter) {
         //retrieve song info
         ContentResolver musicResolver = getContentResolver();
@@ -303,7 +307,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
                     String thisTitle = musicCursor.getString(titleColumn);
                     String thisArtist = musicCursor.getString(artistColumn);
                     String thisAlbum = musicCursor.getString(albumColumn);
-                    if(thisArtist == filter) {
+                    if(thisArtist.equals(filter)) {
                         songList.add(new Song(thisId, thisTitle, thisArtist, "onPrem", thisAlbum));
                     }
                 }
@@ -315,7 +319,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
                     String thisTitle = musicCursor.getString(titleColumn);
                     String thisArtist = musicCursor.getString(artistColumn);
                     String thisAlbum = musicCursor.getString(albumColumn);
-                    if(thisAlbum == filter) {
+                    if(thisAlbum.equals(filter)) {
                         songList.add(new Song(thisId, thisTitle, thisArtist, "onPrem", thisAlbum));
                     }
                 }
@@ -323,7 +327,16 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
             }
         }
     }
-
+    public void songPicked(View view){
+        musicSrv.setList(songList);
+        musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+        musicSrv.playSong();
+        if(playbackPaused){
+            setController();
+            playbackPaused=false;
+        }
+        controller.show(0);
+    }
     private void setController(){
         //set the controller up
         controller = new MusicController(this);
@@ -403,17 +416,17 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
 
     @Override
     public boolean canPause() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekBackward() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekForward() {
-        return false;
+        return true;
     }
 
     @Override
