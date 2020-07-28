@@ -1,5 +1,6 @@
 package com.example.musicplayer1;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +23,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 /*
 
 */
@@ -63,9 +65,6 @@ public class SongActivity extends AppCompatActivity implements MediaPlayerContro
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             startService(playIntent);
         }
-
-
-
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.musicplayer1;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -11,9 +12,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
@@ -48,6 +51,15 @@ public class PlaylistActivity extends AppCompatActivity {
         }
     };
 
+    AdapterView.OnItemClickListener playlistListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent activityIntent = new Intent(PlaylistActivity.this, SongActivity.class);
+            activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(activityIntent);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +77,7 @@ public class PlaylistActivity extends AppCompatActivity {
         }
         playlistAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, playlistNames);
         playlistLV.setAdapter(playlistAdapter);
+        playlistLV.setOnItemClickListener(playlistListener);
     }
 
     @Override
@@ -72,6 +85,7 @@ public class PlaylistActivity extends AppCompatActivity {
         super.onResume();
         playlistAdapter.notifyDataSetChanged();
     }
+
 
     public void saveData() {
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);

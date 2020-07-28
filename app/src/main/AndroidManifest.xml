@@ -23,17 +23,6 @@
             android:exported="true">
         </provider>
 
-        <activity android:name=".ArtistsActivity" />
-        <activity
-            android:name=".AlbumActivity"
-            android:label="@string/title_activity_album">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            </intent-filter>
-        </activity>
-
         <activity android:name=".PlaylistActivity" />
         <activity
             android:name=".SongActivity"
