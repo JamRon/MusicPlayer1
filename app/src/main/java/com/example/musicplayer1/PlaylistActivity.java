@@ -38,8 +38,7 @@ public class PlaylistActivity extends AppCompatActivity {
     ArrayList<Playlist> playlists;
     ListView playlistLV;
     ImageButton create;
-    Cursor mCursor;
-    CursorAdapter mCursorAdapter;
+    ArrayAdapter<String>  playlistAdapter;
 
     View.OnClickListener createListner = new View.OnClickListener() {
         @Override
@@ -59,22 +58,19 @@ public class PlaylistActivity extends AppCompatActivity {
         create = findViewById(R.id.imageButton);
         create.setOnClickListener(createListner);
         loadData();
-        if(!playlists.isEmpty()) {
-            TextView test = new TextView(this);
-            test.setText(playlists.get(0).getTitle());
-            test.setPadding(50, 50, 50, 50);
+        ArrayList<String> playlistNames = new ArrayList<>();
+        for (int i = 0; i < playlists.size(); i++){
+            String curTitle = playlists.get(i).getTitle();
+            playlistNames.add(curTitle);
         }
-
-        mCursor = getContentResolver().query(PlaylistsProvider.CONTENT_URI,new String[]{PlaylistsProvider.COLUMN_TITLE},null,null,null);
-        mCursorAdapter = new SimpleCursorAdapter(getApplicationContext(),R.layout.playlist_cursor_listview,
-                mCursor,new String[]{PlaylistsProvider.COLUMN_TITLE}, new int[]{R.id.title_TV}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        playlistLV.setAdapter(mCursorAdapter);
+        playlistAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, playlistNames);
+        playlistLV.setAdapter(playlistAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mCursorAdapter.notifyDataSetChanged();
+        playlistAdapter.notifyDataSetChanged();
     }
 
     public void saveData() {

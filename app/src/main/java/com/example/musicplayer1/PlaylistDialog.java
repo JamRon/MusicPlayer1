@@ -23,7 +23,8 @@ import java.util.ResourceBundle;
 
 public class PlaylistDialog extends DialogFragment {
     ArrayList<Song> songList;
-    MyArrayList selectedItems;
+    ArrayList<Song> selectedItems;
+
     EditText playlistName;
     String playlistTitle;
     ListView songLV;
@@ -34,10 +35,11 @@ public class PlaylistDialog extends DialogFragment {
         public void onClick(DialogInterface dialog, int which, boolean isChecked) {
             if (isChecked) {
                 // If the user checked the item, add it to the selected items
-                selectedItems.add(songList,which);
-            } else if (selectedItems.contains(which)) {
+                Song addSong = songList.get(which);
+                selectedItems.add(addSong);
+            } else if (selectedItems.contains(songList.get(which))) {
                 // Else, if the item is already in the array, remove it
-                selectedItems.remove(Integer.valueOf(which));
+                selectedItems.remove(songList.get(which));
             }
 
         }
@@ -46,26 +48,23 @@ public class PlaylistDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         songList = getSongList();
-        selectedItems = new MyArrayList();
+        selectedItems = new ArrayList<>();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         ArrayList<String> songsArray = /*new ArrayList<>();*/getsongTitles();
 
         CharSequence[] cs = songsArray.toArray(new CharSequence[songsArray.size()]);
-        CharSequence[] cs2 = {"www","meeman","monkey"};
 
         final View root = inflater.inflate(R.layout.fragment_playlist,null);
-        playlistName = root.findViewById(R.id.playlistTitle);
-        playlistTitle = playlistName.getText().toString();
-        //songLV = root.findViewById(R.id.chooseSong);
-        // ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,songsArray);
-        //songLV.setAdapter(adapter);
+
             builder.setView(root)
                     .setMultiChoiceItems(cs,null,songsListener)
                     .setPositiveButton("Finish", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             PlaylistActivity act = (PlaylistActivity) getActivity();
+                            playlistName = root.findViewById(R.id.playlistTitle);
+                            playlistTitle = playlistName.getText().toString();
                             Playlist newPL = new Playlist(selectedItems,playlistTitle,"device");
                             act.addPlaylist(newPL);
                             act.saveData();
