@@ -1,6 +1,5 @@
 package com.example.musicplayer1;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -28,7 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-public class MenuActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
+public class MainActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
     ListView menu;
     ArrayList<Song> songList;
     ArrayList<String> artistNames;
@@ -45,25 +44,15 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (position == 0){
-                Intent activityIntent = new Intent(MenuActivity.this, PlaylistActivity.class);
+                Intent activityIntent = new Intent(MainActivity.this, PlaylistActivity.class);
                 activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(activityIntent);
             }else if(position == 1){
                 getAlbums();
-                menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        findSongs('b',albumNames.get(position));
-                    }
-                });
+                menu.setOnItemClickListener((parent12, view12, position12, id12) -> findSongs('b',albumNames.get(position12)));
             }else if(position == 2){
                 getArtists();
-                menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        findSongs('a',artistNames.get(position));
-                    }
-                });
+                menu.setOnItemClickListener((parent1, view1, position1, id1) -> findSongs('a',artistNames.get(position1)));
             }
             else if(position == 3){
                 char type = 's';
@@ -72,7 +61,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
 
 
             }else if(position == 4){
-                Intent activityIntent = new Intent(MenuActivity.this, SpotifyActivity.class);
+                Intent activityIntent = new Intent(MainActivity.this, SpotifyActivity.class);
                 activityIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(activityIntent);
             }
@@ -119,7 +108,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
         menuItems.add("Songs");
         menuItems.add("Search");
 
-        menuAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, menuItems);
+        menuAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, menuItems);
 
         menu.setOnItemClickListener(menuListener);
         menu.setAdapter(menuAdapter);
@@ -133,32 +122,22 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
     }
 
     public void findSongs(char type, String filter){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
-                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                // app-defined int constant
-                return;
-            }}
-
-        songList = new ArrayList<Song>();
-        switch (type){
-            case 's': {
-                getSongList();
-                break;
-            }
-            default: {
-                getSongList(type,filter);
-                break;
-            }
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant
+            return;
         }
-        Collections.sort(songList, new Comparator<Song>(){
-            public int compare(Song a, Song b){
-                return a.getTitle().compareTo(b.getTitle());
-            }
-        });
-        SongAdapter songAdt = new SongAdapter(MenuActivity.this, songList);
+
+        songList = new ArrayList<>();
+        if (type == 's') {
+            getSongList();
+        } else {
+            getSongList(type, filter);
+        }
+        Collections.sort(songList, (a, b) -> a.getTitle().compareTo(b.getTitle()));
+        SongAdapter songAdt = new SongAdapter(MainActivity.this, songList);
         menu.setAdapter(songAdt);
         setController();
     }
@@ -239,6 +218,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
             }
             while (musicCursor.moveToNext());
         }
+        musicCursor.close();
     }
     public void getArtists(){
         artistNames = new ArrayList<>();
@@ -259,7 +239,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
             }
             while (musicCursor.moveToNext());
         }
-        ArrayAdapter<String> artistAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, artistNames);
+        ArrayAdapter<String> artistAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, artistNames);
         menu.setAdapter(artistAdapter);
     }
     public void getAlbums() {
@@ -281,7 +261,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
             }
             while (musicCursor.moveToNext());
         }
-        ArrayAdapter<String> artistAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, albumNames);
+        ArrayAdapter<String> artistAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, albumNames);
         menu.setAdapter(artistAdapter);    }
     public void getSongList(char type, String filter) {
         //retrieve song info
@@ -326,6 +306,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
                 while (musicCursor.moveToNext());
             }
         }
+        musicCursor.close();
     }
     public void songPicked(View view){
         musicSrv.setList(songList);
@@ -340,17 +321,7 @@ public class MenuActivity extends AppCompatActivity implements MediaController.M
     private void setController(){
         //set the controller up
         controller = new MusicController(this);
-        controller.setPrevNextListeners(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playNext();
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playPrev();
-            }
-        });
+        controller.setPrevNextListeners(v -> playNext(), v -> playPrev());
         controller.setMediaPlayer(this);
         controller.setAnchorView(findViewById(R.id.space));
         controller.setEnabled(true);
