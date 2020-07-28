@@ -68,6 +68,7 @@ public class PlaylistDialog extends DialogFragment {
                             PlaylistActivity act = (PlaylistActivity) getActivity();
                             Playlist newPL = new Playlist(selectedItems,playlistTitle,"device");
                             act.addPlaylist(newPL);
+                            act.saveData();
                         }
                     });
 
