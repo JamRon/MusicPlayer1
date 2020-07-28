@@ -42,8 +42,7 @@
         android:id="@+id/playlist_LV"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="#">
+        android:layout_weight="1">
         <!--app:layout_constraintBottom_toTopOf="@+id/space1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
