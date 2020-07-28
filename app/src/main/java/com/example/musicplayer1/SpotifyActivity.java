@@ -10,26 +10,16 @@ import com.android.volley.toolbox.Volley;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.ServiceConnection;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.IBinder;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -56,12 +46,17 @@ import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.spotify.protocol.client.CallResult;
+import com.spotify.protocol.client.PendingResult;
+import com.spotify.protocol.client.Result;
+import com.spotify.protocol.types.PlayerState;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 
-public class SpotifyActivity extends AppCompatActivity {
+public class SpotifyActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
     private ArrayList<Song> songList;
     private ListView songView;
@@ -77,11 +72,9 @@ public class SpotifyActivity extends AppCompatActivity {
     private String  token = "";
     private Button get_request_Button;
 
-    private MusicService musicSrv;
-    private Intent playIntent;
-    private boolean musicBound=false;
+    private int currentSong = 0;
     private MusicController controller;
-    private boolean paused=false, playbackPaused=false;
+    private boolean playing ;
 
 
 
@@ -183,11 +176,14 @@ public class SpotifyActivity extends AppCompatActivity {
         // Benji Testing out request from spotify
         get_request_Button = findViewById(R.id.spotify_Search_Button);
         searchText = findViewById(R.id.spotify_Search_TextView);
+        setController();
+
 
         get_request_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendGetRequest();
+                controller.show(0);
             }
         });
 
@@ -196,7 +192,9 @@ public class SpotifyActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Song currrent_Song = songList.get(position);
                 mSpotifyAppRemote.getPlayerApi().play(currrent_Song.getUri());
+                currentSong = position;
                 Toast.makeText(getApplicationContext(), currrent_Song.getUri(), Toast.LENGTH_SHORT).show();
+                controller.show(0);
             }
         });
 
@@ -283,7 +281,7 @@ public class SpotifyActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               Log.e("SpotifyActivity", error.getMessage());
+                Log.e("SpotifyActivity", Objects.requireNonNull(error.getMessage()));
             }
 
         }){
@@ -298,6 +296,9 @@ public class SpotifyActivity extends AppCompatActivity {
         };
         mRequest.add(request);
     }
+
+
+
 
     @Override
     protected void onStop() {
@@ -320,5 +321,130 @@ public class SpotifyActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public void start() {
+        mSpotifyAppRemote.getPlayerApi().play(songList.get(currentSong).getUri());
+        controller.show(0);
+    }
+
+    @Override
+    public void pause() {
+        mSpotifyAppRemote.getPlayerApi().pause();
+        controller.show(0);
+    }
+
+    @Override
+    public int getDuration() {
+        return 0;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return currentSong;
+    }
+
+    @Override
+    public void seekTo(int pos) {
+
+    }
+
+    @Override
+    public boolean isPlaying() {
+        mSpotifyAppRemote.getPlayerApi().getPlayerState()
+                .setResultCallback(playerState -> {
+                    // have fun with playerState
+                    playing = !playerState.isPaused;
+                })
+                .setErrorCallback(throwable -> {
+                    // =(
+                    System.out.println(throwable.getMessage());
+                });
+
+        return playing;
+    }
+
+
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
+
+    private void setController(){
+        //set the controller up
+        controller = new MusicController(this);
+        controller.setPrevNextListeners(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        playNext();
+                    }
+                },
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        playPrev();
+                    }
+                }
+        );
+
+
+        controller.setMediaPlayer(this);
+        controller.setAnchorView(findViewById(R.id.space));
+        controller.setEnabled(true);
+
+//        controller.set
+    }
+
+    //play next
+    private void playNext(){
+
+        if (currentSong == songList.size()-1){
+            currentSong = 0;
+            String nextSong = songList.get(currentSong).getUri();
+            mSpotifyAppRemote.getPlayerApi().play(nextSong);
+        } else {
+            String nextSong = songList.get(++currentSong).getUri();
+            mSpotifyAppRemote.getPlayerApi().play(nextSong);
+        }
+
+//        controller.show(0);
+    }
+
+    //play previous
+    private void playPrev(){
+        if (currentSong == 0){
+            currentSong = songList.size()-1;
+            String nextSong = songList.get(currentSong).getUri();
+            mSpotifyAppRemote.getPlayerApi().play(nextSong);
+        } else {
+            String nextSong = songList.get(--currentSong).getUri();
+            mSpotifyAppRemote.getPlayerApi().play(nextSong);
+        }
+
+//        controller.show(0);
+    }
+
 }
 
