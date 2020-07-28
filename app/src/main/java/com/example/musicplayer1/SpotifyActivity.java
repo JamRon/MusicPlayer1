@@ -68,13 +68,14 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
 
     private EditText searchText;
     private RequestQueue mRequest;
-    private TextView searchResult;
     private String  token = "";
     private Button get_request_Button;
 
     private int currentSong = 0;
     private MusicController controller;
     private boolean playing ;
+    private long track_time;
+    private long playback_time;
 
 
 
@@ -336,16 +337,39 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
 
     @Override
     public int getDuration() {
-        return 0;
+
+        mSpotifyAppRemote.getPlayerApi().getPlayerState()
+                .setResultCallback(playerState -> {
+                    // have fun with playerState
+                    track_time = playerState.track.duration;
+                })
+                .setErrorCallback(throwable -> {
+                    // =(
+                    System.out.println(throwable.getMessage());
+                });
+
+        return (int) track_time;
     }
 
     @Override
     public int getCurrentPosition() {
-        return currentSong;
+
+        mSpotifyAppRemote.getPlayerApi().getPlayerState()
+                .setResultCallback(playerState -> {
+                    // have fun with playerState
+                    playback_time = playerState.playbackPosition;
+                })
+                .setErrorCallback(throwable -> {
+                    // =(
+                    System.out.println(throwable.getMessage());
+                });
+
+        return (int) playback_time;
     }
 
     @Override
     public void seekTo(int pos) {
+        mSpotifyAppRemote.getPlayerApi().seekTo(pos);
 
     }
 
@@ -368,7 +392,7 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
 
     @Override
     public int getBufferPercentage() {
-        return 0;
+        return 100;
     }
 
     @Override
