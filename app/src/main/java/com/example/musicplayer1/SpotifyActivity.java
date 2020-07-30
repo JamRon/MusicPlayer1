@@ -194,7 +194,7 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
                 Song currrent_Song = songList.get(position);
                 mSpotifyAppRemote.getPlayerApi().play(currrent_Song.getUri());
                 currentSong = position;
-                Toast.makeText(getApplicationContext(), currrent_Song.getUri(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), currrent_Song.getUri(), Toast.LENGTH_SHORT).show();
                 controller.show(0);
             }
         });

@@ -20,7 +20,9 @@
             android:layout_width="317dp"
             android:layout_height="59dp"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:hint="@string/search_spotify"
+            android:inputType="textPersonName"
+            android:importantForAutofill="no" />
 
         <Button
             android:id="@+id/spotify_Search_Button"

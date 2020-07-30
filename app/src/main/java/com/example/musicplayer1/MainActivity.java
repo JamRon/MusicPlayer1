@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.MediaController;
 
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     ArrayList<Song> songList;
     ArrayList<String> artistNames;
     ArrayList<String> albumNames;
+    ImageButton pauseButton;
+    ImageButton prevButton;
+    ImageButton nextButton;
 
     private MusicService musicSrv;
     private Intent playIntent;
@@ -67,7 +71,29 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             }
         }
     };
-
+    ImageButton.OnClickListener pauseListener = new AdapterView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(musicSrv != null){
+                pause();
+            }else {}
+        }
+    };
+    ImageButton.OnClickListener prevListener = new AdapterView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(musicSrv != null){
+                playPrev();
+            }else {}
+        }
+    };ImageButton.OnClickListener nextListener = new AdapterView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(musicSrv != null){
+                playNext();
+            }else {}
+        }
+    };
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //menu item selected
@@ -108,10 +134,17 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         menuItems.add("Songs");
         menuItems.add("Search");
 
+
         menuAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, menuItems);
 
         menu.setOnItemClickListener(menuListener);
         menu.setAdapter(menuAdapter);
+        pauseButton = findViewById(R.id.pauseButton);
+        pauseButton.setOnClickListener(pauseListener);
+        prevButton = findViewById(R.id.prevButton);
+        prevButton.setOnClickListener(prevListener);
+        nextButton = findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(nextListener);
     }
 
     @Override
@@ -159,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     @Override
     protected void onStop() {
-        if (controller!= null)
+        if (controller == null)
             controller.hide();
         super.onStop();
     }
@@ -323,8 +356,12 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         controller = new MusicController(this);
         controller.setPrevNextListeners(v -> playNext(), v -> playPrev());
         controller.setMediaPlayer(this);
-        controller.setAnchorView(findViewById(R.id.space));
+        controller.setAnchorView(findViewById(R.id.controllerButtons));
         controller.setEnabled(true);
+
+    }
+    public MusicController getController(){
+        return controller;
     }
     private void playNext(){
         musicSrv.playNext();
@@ -342,6 +379,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         }
         controller.show(0);
     }
+    public MusicService getMusicSrv(){return musicSrv;}
 
     @Override
     public void start() {

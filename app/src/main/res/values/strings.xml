@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MusicPlayer1</string>
+    <string name="app_name">MusicHub</string>
     <string name="title_activity_spotify">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -103,6 +103,10 @@
     <string name="popup_add_to_playlist">What playlist do you want to add to?</string>
     <string name="newPlaylistTV">New Playlist</string>
     <string name="enter_playlist_title">Enter Playlist Title</string>
+    <string name="search_spotify">Search Spotify</string>
+    <string name="to_play_music">to play music</string>
+    <string name="to_play_prev_song">to play prev song</string>
+    <string name="to_play_next_song">to play next song</string>
     <string-array name="tests">
         <item>monkey</item>
         <item>buddy</item>
