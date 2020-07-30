@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     @Override
     protected void onStop() {
-        if (controller == null)
+        if (controller != null)
             controller.hide();
         super.onStop();
     }

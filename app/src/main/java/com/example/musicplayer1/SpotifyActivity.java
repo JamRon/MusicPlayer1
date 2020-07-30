@@ -27,6 +27,7 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
@@ -60,6 +61,9 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
 
     private ArrayList<Song> songList;
     private ListView songView;
+    ImageButton pauseButton;
+    ImageButton prevButton;
+    ImageButton nextButton;
 
     private static final int REQUEST_CODE = 1337;
     private static final String CLIENT_ID = "a911f9e3de834eb6a0a1cf52848b360c";
@@ -155,7 +159,29 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
 
     }
 
-
+    ImageButton.OnClickListener pauseListener = new AdapterView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(mSpotifyAppRemote != null){
+                pause();
+            }else {}
+        }
+    };
+    ImageButton.OnClickListener prevListener = new AdapterView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(mSpotifyAppRemote != null){
+                playPrev();
+            }else {}
+        }
+    };ImageButton.OnClickListener nextListener = new AdapterView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(mSpotifyAppRemote != null){
+                playNext();
+            }else {}
+        }
+    };
 
 
     @Override
@@ -230,6 +256,12 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
                 return true;
             }
         });
+        pauseButton = findViewById(R.id.pauseButton);
+        pauseButton.setOnClickListener(pauseListener);
+        prevButton = findViewById(R.id.prevButton);
+        prevButton.setOnClickListener(prevListener);
+        nextButton = findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(nextListener);
     }
 
     private void sendGetRequest() {
@@ -430,7 +462,7 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
 
 
         controller.setMediaPlayer(this);
-        controller.setAnchorView(findViewById(R.id.space));
+        controller.setAnchorView(findViewById(R.id.controllerButtons));
         controller.setEnabled(true);
 
 //        controller.set
