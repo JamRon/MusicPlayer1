@@ -136,7 +136,6 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
                         Log.d("SpotifyActivity", "Connected! Yay!");
 
                         // Now you can start interacting with App Remote
-                        connected();
                     }
 
                     @Override
@@ -157,12 +156,6 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
     }
 
 
-
-    private void connected() {
-//        mSpotifyAppRemote.getConnectApi().connectSwitchToLocalDevice();
-//        mSpotifyAppRemote.getPlayerApi().play("spotify:track:6ztvsy3C6hPjVg9j4x1XKJ");
-        Log.e("SpotifyActivity", "WORKS");
-    }
 
 
     @Override
@@ -390,7 +383,6 @@ public class SpotifyActivity extends AppCompatActivity implements MediaControlle
 
         return playing;
     }
-
 
 
     @Override
